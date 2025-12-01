@@ -160,6 +160,27 @@ public class ChefDAO {
             e.printStackTrace();
         }
     }
+    
+    public Chef getChefByUsername(String username) {
+        String sql = "SELECT * FROM CHEF WHERE username = ?";
+        try {
+            Connection connection = connectionUtil.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, username);
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                return mapSingleRow(resultSet);
+            }
+            return null;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 
     /**
      * Searches for Chef records by a search term in the username.

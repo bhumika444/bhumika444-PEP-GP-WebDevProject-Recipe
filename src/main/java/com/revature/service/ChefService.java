@@ -36,6 +36,9 @@ public class ChefService {
     public Optional<Chef> findChef(int id) {
         return Optional.ofNullable(chefDAO.getChefById(id));
     }
+    public Chef getChefByUsername(String username) {
+        return chefDAO.getChefByUsername(username); 
+    }
 
     /**
      * Saves a Chef entity. If the Chef's ID is zero, a new Chef is created and the `chef` parameter's ID is updated.
