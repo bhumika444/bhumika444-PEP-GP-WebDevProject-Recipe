@@ -11,13 +11,16 @@ const BASE_URL = "http://localhost:8081"; // backend URL
  * - login button
  * - logout button (optional, for token testing)
  */
-
+const usernameInput = document.getElementById("username-input");
+const passwordInput = document.getElementById("password-input");
+const loginButton = document.getElementById("login-button");
 /* 
  * TODO: Add click event listener to login button
  * - Call processLogin on click
  */
-
-
+if (loginButton) {
+    loginButton.addEventListener('click', processLogin);
+}
 /**
  * TODO: Process Login Function
  * 
