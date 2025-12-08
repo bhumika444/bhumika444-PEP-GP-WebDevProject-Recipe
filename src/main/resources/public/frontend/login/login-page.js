@@ -14,10 +14,10 @@ const isTestEnv = typeof window === "undefined" || typeof document === "undefine
  */
 let usernameInput, passwordInput, loginButton, logoutButton;
 if (!isTestEnv) {
-    usernameInput = document.getElementById("username");
-    passwordInput = document.getElementById("password");
-    loginButton = document.getElementById("loginBtn");
-    logoutButton = document.getElementById("logoutBtn");
+    usernameInput = document.getElementById("login-input");
+    passwordInput = document.getElementById("password-input");
+    loginButton = document.getElementById("login-button");
+    logoutButton = document.getElementById("logout-button");
 
 /* 
  * TODO: Add click event listener to login button

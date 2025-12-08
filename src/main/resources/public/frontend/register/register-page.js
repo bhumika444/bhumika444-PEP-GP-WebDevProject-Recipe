@@ -11,11 +11,11 @@ const isTestEnv = typeof window === "undefined" || typeof document === "undefine
  */
 let usernameInput, emailInput, passwordInput, repeatPasswordInput, registerButton;
 if (!isTestEnv) {
-    usernameInput = document.getElementById("username");
-    emailInput = document.getElementById("email");
-    passwordInput = document.getElementById("password");
-    repeatPasswordInput = document.getElementById("repeatPassword");
-    registerButton = document.getElementById("registerBtn");
+    usernameInput = document.getElementById("username-input");
+    emailInput = document.getElementById("email-input");
+    passwordInput = document.getElementById("password-input");
+    repeatPasswordInput = document.getElementById("repeat-password-input");
+    registerButton = document.getElementById("register-button");
 
 /* 
  * TODO: Ensure the register button calls processRegistration when clicked
