@@ -107,8 +107,8 @@ async function processLogin(testData) {
             const [token, isAdmin] = textResult.split(" ");
 
             if (!isTestEnv) {
-                sessionStorage.setItem("token", token);
-                sessionStorage.setItem("isAdmin", isAdmin);
+                sessionStorage.setItem("auth-token", token);
+                sessionStorage.setItem("is-admin", isAdmin);
             }
             if (!isTestEnv && logoutButton) {
                 logoutButton.style.display = "block";

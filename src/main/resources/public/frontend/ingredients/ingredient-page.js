@@ -66,7 +66,9 @@ async function addIngredient() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: sessionStorage.getItem("authToken") || ""
+            // Authorization: sessionStorage.getItem("authToken") || ""
+            Authorization: `Bearer ${sessionStorage.getItem("auth-token") || ""}`
+
         },
         body: JSON.stringify(body)
     };
@@ -160,7 +162,9 @@ async function deleteIngredient() {
     const requestOptions = {
         method: "DELETE",
         headers: {
-            Authorization: sessionStorage.getItem("authToken") || ""
+            // Authorization: sessionStorage.getItem("authToken") || ""
+            Authorization: `Bearer ${sessionStorage.getItem("auth-token") || ""}`
+
         }
     };
 
