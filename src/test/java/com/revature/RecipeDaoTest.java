@@ -26,7 +26,7 @@ import com.revature.util.ConnectionUtil;
 import com.revature.util.Page;
 import com.revature.util.PageOptions;
 
-class RecipeDaoTest {
+public class RecipeDaoTest {
 
     @Mock
     private ConnectionUtil connectionUtil;
@@ -70,7 +70,7 @@ class RecipeDaoTest {
     }
 
     @Test
-    void getRecipeById_Success() throws SQLException {
+    public void getRecipeById_Success() throws SQLException {
         // Arrange
         Recipe expectedRecipe = recipeList.get(0);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
@@ -91,7 +91,7 @@ class RecipeDaoTest {
     }
 
     @Test
-    void getAllRecipes_Success() throws SQLException {
+    public void getAllRecipes_Success() throws SQLException {
         // Arrange
         String expectedSQL = "SELECT * FROM RECIPE ORDER BY id";
         when(connectionUtil.getConnection()).thenReturn(connection); // Mock the connection
@@ -124,7 +124,7 @@ class RecipeDaoTest {
     }
 
     @Test
-    void createRecipe_Success() throws SQLException {
+    public void createRecipe_Success() throws SQLException {
         // Arrange
         Recipe recipeToCreate = new Recipe(0, "test recipe", "test instructions", chefList.get(0));
         when(preparedStatement.executeUpdate()).thenReturn(1);
@@ -143,7 +143,7 @@ class RecipeDaoTest {
     }
 
     @Test
-    void updateRecipe_Success() throws SQLException {
+    public void updateRecipe_Success() throws SQLException {
         // Arrange
         Recipe recipeToUpdate = recipeList.get(0);
         recipeToUpdate.setName("updated name");
@@ -159,7 +159,7 @@ class RecipeDaoTest {
     }
 
     @Test
-    void deleteRecipe_Success() throws SQLException {
+    public void deleteRecipe_Success() throws SQLException {
         // Arrange
         Recipe recipeToDelete = recipeList.get(0);
         when(preparedStatement.executeUpdate()).thenReturn(1); // Mock the execution result
@@ -173,7 +173,7 @@ class RecipeDaoTest {
     }
 
     @Test
-    void searchRecipesByTerm_Success() throws SQLException {
+    public void searchRecipesByTerm_Success() throws SQLException {
         // Arrange
         String searchTerm = "soup";
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
@@ -199,7 +199,7 @@ class RecipeDaoTest {
     }
 
     @Test
-    void getAllRecipesPaged_Success() throws SQLException {
+    public void getAllRecipesPaged_Success() throws SQLException {
         // Arrange
         PageOptions pageable = new PageOptions(1, 2);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);

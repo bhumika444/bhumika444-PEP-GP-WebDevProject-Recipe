@@ -46,7 +46,7 @@ public class IngredientServiceTest {
     }
 
     @Test
-    void fetchOneIngredient() {
+    public void fetchOneIngredient() {
         when(ingredientDao.getIngredientById(1)).thenReturn(MOCKS.get(0));
         Optional<Ingredient> ingredient = ingredientService.findIngredient(1);
         assertTrue(ingredient.isPresent(), () -> "Ingredient should be present");
@@ -54,14 +54,14 @@ public class IngredientServiceTest {
     }
 
     @Test
-    void failToFetchOneIngredient() {
+    public void failToFetchOneIngredient() {
         when(ingredientDao.getIngredientById(1)).thenReturn(null);
         Optional<Ingredient> recipe = ingredientService.findIngredient(1);
         assertTrue(recipe.isEmpty(), () -> "Ingredient should not be present");
     }
 
     @Test
-    void saveNewIngredient() {
+    public void saveNewIngredient() {
         Ingredient newIngredient = new Ingredient("new ingredient");
         ArgumentCaptor<Ingredient> ingredientCaptor = ArgumentCaptor.forClass(Ingredient.class);
         when(ingredientDao.createIngredient(any(Ingredient.class))).thenReturn(42);
@@ -72,7 +72,7 @@ public class IngredientServiceTest {
     }
 
     @Test
-    void updateIngredient() {
+    public void updateIngredient() {
         Ingredient existingIngredient = new Ingredient(42, "new ingredient");
         ArgumentCaptor<Ingredient> ingredientCaptor = ArgumentCaptor.forClass(Ingredient.class);
         doNothing().when(ingredientDao).updateIngredient(any(Ingredient.class));
@@ -83,7 +83,7 @@ public class IngredientServiceTest {
     }
 
     @Test
-    void delteIngredient() throws SQLException {
+    public void delteIngredient() throws SQLException {
         when(ingredientDao.getIngredientById(1)).thenReturn(MOCKS.get(0));
         doNothing().when(ingredientDao).deleteIngredient(any(Ingredient.class));
         ArgumentCaptor<Ingredient> ingredientCaptor = ArgumentCaptor.forClass(Ingredient.class);
@@ -93,14 +93,14 @@ public class IngredientServiceTest {
     }
 
     @Test
-    void searchForListOfAllIngredient() {
+    public void searchForListOfAllIngredient() {
         when(ingredientDao.getAllIngredients()).thenReturn(MOCKS);
         List<Ingredient> ingredients = ingredientService.searchIngredients(null);
         assertIterableEquals(MOCKS, ingredients, () -> "Ingredients should match");
     }
 
     @Test
-    void searchForFilteredListOfIngredients() {
+    public void searchForFilteredListOfIngredients() {
         when(ingredientDao.searchIngredients("to")).thenReturn(Arrays.asList(MOCKS.get(1), MOCKS.get(2), MOCKS.get(5)));
         List<Ingredient> ingredients = ingredientService.searchIngredients("to");
         assertIterableEquals(Arrays.asList(MOCKS.get(1), MOCKS.get(2), MOCKS.get(5)), ingredients,
@@ -108,14 +108,14 @@ public class IngredientServiceTest {
     }
 
     @Test
-    void searchReturnsEmptyList() {
+    public void searchReturnsEmptyList() {
         when(ingredientDao.searchIngredients("Bal")).thenReturn(Collections.emptyList());
         List<Ingredient> ingredients = ingredientService.searchIngredients("Bal");
         assertTrue(ingredients.isEmpty(), () -> "Ingredients should be empty");
     }
 
     @Test
-    void searchForPageOfAllRecipes() {
+    public void searchForPageOfAllRecipes() {
         when(ingredientDao.getAllIngredients(any(PageOptions.class)))
                 .thenReturn(new Page<Ingredient>(1, 5, 1, 5, MOCKS));
         Page<Ingredient> ingredients = ingredientService.searchIngredients(null, 1, 5, "id", "asc");
@@ -126,7 +126,7 @@ public class IngredientServiceTest {
     }
 
     @Test
-    void serchForFilteredPageOfRecipes() {
+    public void serchForFilteredPageOfRecipes() {
         when(ingredientDao.searchIngredients(anyString(), any(PageOptions.class)))
                 .thenReturn(new Page<Ingredient>(1, 3, 1, 3, Arrays.asList(MOCKS.get(1), MOCKS.get(2), MOCKS.get(5))));
         Page<Ingredient> ingredients = ingredientService.searchIngredients("to", 1, 5, "id", "asc");
@@ -138,7 +138,7 @@ public class IngredientServiceTest {
     }
 
     @Test
-    void searchReturnsEmptyPage() {
+    public void searchReturnsEmptyPage() {
         when(ingredientDao.searchIngredients(anyString(), any(PageOptions.class)))
                 .thenReturn(new Page<Ingredient>(0, 0, 0, 0, Collections.emptyList()));
         Page<Ingredient> ingredients = ingredientService.searchIngredients("Bal", 1, 5, "id", "asc");

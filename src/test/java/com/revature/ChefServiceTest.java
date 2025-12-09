@@ -25,7 +25,7 @@ import com.revature.service.ChefService;
 import com.revature.util.Page;
 import com.revature.util.PageOptions;
 
-class ChefServiceTest {
+public class ChefServiceTest {
 
     private ChefService chefService;
     private ChefDAO chefDao;
@@ -43,7 +43,7 @@ class ChefServiceTest {
     }
 
     @Test
-    void fetchOneChef() {
+    public void fetchOneChef() {
         when(chefDao.getChefById(1)).thenReturn(MOCKS.get(0));
         Optional<Chef> chef = chefService.findChef(1);
         assertTrue(chef.isPresent(), () -> "Chef should be present");
@@ -51,14 +51,14 @@ class ChefServiceTest {
     }
 
     @Test
-    void failToFetchOneChef() {
+    public void failToFetchOneChef() {
         when(chefDao.getChefById(1)).thenReturn(null);
         Optional<Chef> chef = chefService.findChef(1);
         assertTrue(chef.isEmpty(), () -> "Chef should not be present");
     }
 
     @Test
-    void saveNewChef() {
+    public void saveNewChef() {
         Chef newChef = new Chef(0, "new chef", "newchef@chefscape.net", "1234abc", false);
         ArgumentCaptor<Chef> chefCaptor = ArgumentCaptor.forClass(Chef.class);
         when(chefDao.createChef(any(Chef.class))).thenReturn(42);
@@ -69,7 +69,7 @@ class ChefServiceTest {
     }
 
     @Test
-    void updateChef() {
+    public void updateChef() {
         Chef existingChef = new Chef(42, "Existing Chef", "Existing.Chef@gmail.com", "1234abc", false);
         ArgumentCaptor<Chef> chefCaptor = ArgumentCaptor.forClass(Chef.class);
         chefService.saveChef(existingChef);
@@ -79,7 +79,7 @@ class ChefServiceTest {
     }
 
     @Test
-    void deleteChef() {
+    public void deleteChef() {
         when(chefDao.getChefById(1)).thenReturn(MOCKS.get(0));
         doNothing().when(chefDao).deleteChef(any(Chef.class));
         ArgumentCaptor<Chef> chefCaptor = ArgumentCaptor.forClass(Chef.class);
@@ -89,28 +89,28 @@ class ChefServiceTest {
     }
 
     @Test
-    void searchForListOfAllChefs() {
+    public void searchForListOfAllChefs() {
         when(chefDao.getAllChefs()).thenReturn(MOCKS);
         List<Chef> chefs = chefService.searchChefs(null);
         assertIterableEquals(MOCKS, chefs, () -> "Chefs should match");
     }
 
     @Test
-    void searchForFilteredListOfChefs() {
+    public void searchForFilteredListOfChefs() {
         when(chefDao.searchChefsByTerm("a")).thenReturn(Arrays.asList(MOCKS.get(1), MOCKS.get(2)));
         List<Chef> chefs = chefService.searchChefs("a");
         assertIterableEquals(Arrays.asList(MOCKS.get(1), MOCKS.get(2)), chefs, () -> "Chefs should match");
     }
 
     @Test
-    void searchReturnsEmptyList() {
+    public void searchReturnsEmptyList() {
         when(chefDao.searchChefsByTerm("Bal")).thenReturn(Collections.emptyList());
         List<Chef> chefs = chefService.searchChefs("Bal");
         assertTrue(chefs.isEmpty(), () -> "Chefs should be empty");
     }
 
     @Test
-    void searchForPageOfAllChefs() {
+    public void searchForPageOfAllChefs() {
         when(chefDao.getAllChefs(any(PageOptions.class))).thenReturn(new Page<Chef>(1, 4, 1, 4, MOCKS));
         Page<Chef> chefs = chefService.searchChefs(null, 1, 4, "id", "asc");
         ArgumentCaptor<PageOptions> optionsCaptor = ArgumentCaptor.forClass(PageOptions.class);
@@ -120,7 +120,7 @@ class ChefServiceTest {
     }
 
     @Test
-    void searchForFilteredPageOfChef() {
+    public void searchForFilteredPageOfChef() {
         when(chefDao.searchChefsByTerm(anyString(), any(PageOptions.class)))
                 .thenReturn(new Page<Chef>(1, 2, 1, 2, Arrays.asList(MOCKS.get(1), MOCKS.get(2))));
         Page<Chef> chefs = chefService.searchChefs("a", 1, 2, "id", "asc");
@@ -132,7 +132,7 @@ class ChefServiceTest {
     }
 
     @Test
-    void searchReturnsEmptyPage() {
+    public void searchReturnsEmptyPage() {
         when(chefDao.searchChefsByTerm(anyString(), any(PageOptions.class)))
                 .thenReturn(new Page<Chef>(1, 5, 0, 0, Collections.emptyList()));
         Page<Chef> chefs = chefService.searchChefs("Bal", 1, 5, "id", "asc");

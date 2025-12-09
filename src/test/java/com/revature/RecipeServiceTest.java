@@ -40,7 +40,7 @@ public class RecipeServiceTest {
     }
 
     @Test
-    void fetchOneRecipe() {
+    public void fetchOneRecipe() {
         when(recipeDao.getRecipeById(1)).thenReturn(MOCKS.get(0));
         Optional<Recipe> recipe = recipeService.findRecipe(1);
         assertTrue(recipe.isPresent(), () -> "Recipe should be present");
@@ -48,14 +48,14 @@ public class RecipeServiceTest {
     }
 
     @Test
-    void failToFetchOneRecipe() {
+    public void failToFetchOneRecipe() {
         when(recipeDao.getRecipeById(1)).thenReturn(null);
         Optional<Recipe> recipe = recipeService.findRecipe(1);
         assertTrue(recipe.isEmpty(), () -> "Recipe should not be present");
     }
 
     @Test
-    void saveNewRecipe() {
+    public void saveNewRecipe() {
         Recipe newRecipe = new Recipe("New Recipe", "New Recipe Instructions");
         ArgumentCaptor<Recipe> recipeCaptor = ArgumentCaptor.forClass(Recipe.class);
         when(recipeDao.createRecipe(any(Recipe.class))).thenReturn(42);
@@ -66,7 +66,7 @@ public class RecipeServiceTest {
     }
 
     @Test
-    void updateRecipe() {
+    public void updateRecipe() {
         Recipe existingRecipe = new Recipe(42, "Existing Recipe", "Existing Recipe Instructions", null);
         ArgumentCaptor<Recipe> recipeCaptor = ArgumentCaptor.forClass(Recipe.class);
         doNothing().when(recipeDao).updateRecipe(any(Recipe.class));
@@ -78,7 +78,7 @@ public class RecipeServiceTest {
     }
 
     @Test
-    void deleteRecipe() {
+    public void deleteRecipe() {
         when(recipeDao.getRecipeById(1)).thenReturn(MOCKS.get(0));
         doNothing().when(recipeDao).deleteRecipe(any(Recipe.class));
         ArgumentCaptor<Recipe> recipeCaptor = ArgumentCaptor.forClass(Recipe.class);
@@ -88,14 +88,14 @@ public class RecipeServiceTest {
     }
 
     @Test
-    void searchForListOfAllRecipes() {
+    public void searchForListOfAllRecipes() {
         when(recipeDao.getAllRecipes()).thenReturn(MOCKS);
         List<Recipe> recipes = recipeService.searchRecipes(null);
         assertIterableEquals(MOCKS, recipes, () -> "Recipes should match");
     }
 
     @Test
-    void searchForFilteredListOfRecipes() {
+    public void searchForFilteredListOfRecipes() {
         when(recipeDao.searchRecipesByTerm("a"))
                 .thenReturn(Arrays.asList(MOCKS.get(0), MOCKS.get(2), MOCKS.get(3), MOCKS.get(4)));
         List<Recipe> recipes = recipeService.searchRecipes("a");
@@ -104,14 +104,14 @@ public class RecipeServiceTest {
     }
 
     @Test
-    void searchReturnsEmptyList() {
+    public void searchReturnsEmptyList() {
         when(recipeDao.searchRecipesByTerm("Bal")).thenReturn(Collections.emptyList());
         List<Recipe> recipes = recipeService.searchRecipes("Bal");
         assertTrue(recipes.isEmpty(), () -> "Recipes should be empty");
     }
 
     @Test
-    void searchForPageOfAllRecipes() {
+    public void searchForPageOfAllRecipes() {
         when(recipeDao.getAllRecipes(any(PageOptions.class))).thenReturn(new Page<Recipe>(1, 5, 1, 5, MOCKS));
         Page<Recipe> recipes = recipeService.searchRecipes(null, 1, 5, "id", "asc");
         ArgumentCaptor<PageOptions> optionsCaptor = ArgumentCaptor.forClass(PageOptions.class);
@@ -121,7 +121,7 @@ public class RecipeServiceTest {
     }
 
     @Test
-    void serchForFilteredPageOfRecipes() {
+    public void serchForFilteredPageOfRecipes() {
         when(recipeDao.searchRecipesByTerm(anyString(), any(PageOptions.class))).thenReturn(
                 new Page<Recipe>(1, 5, 1, 5, Arrays.asList(MOCKS.get(0), MOCKS.get(2), MOCKS.get(3), MOCKS.get(4))));
         Page<Recipe> recipes = recipeService.searchRecipes("a", 1, 5, "id", "asc");
@@ -134,7 +134,7 @@ public class RecipeServiceTest {
     }
 
     @Test
-    void searchReturnsEmptyPage() {
+    public void searchReturnsEmptyPage() {
         when(recipeDao.searchRecipesByTerm(anyString(), any(PageOptions.class)))
                 .thenReturn(new Page<Recipe>(1, 5, 0, 0, Collections.emptyList()));
         Page<Recipe> recipes = recipeService.searchRecipes("Bal", 1, 5, "id", "asc");

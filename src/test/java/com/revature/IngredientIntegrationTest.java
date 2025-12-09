@@ -33,7 +33,7 @@ public class IngredientIntegrationTest {
     }
 
     @Test
-    void testGetIngredient() {
+    public void testGetIngredient() {
         JavalinTest.test(app, (server, client) -> {
             assertEquals(200, client.get("/ingredients/1").code());
             assertEquals("{\"id\":1,\"name\":\"carrot\"}", client.get("/ingredients/1").body().string());
@@ -41,21 +41,21 @@ public class IngredientIntegrationTest {
     }
 
     @Test
-    void testGetIngredientNotFound() {
+    public void testGetIngredientNotFound() {
         JavalinTest.test(app, (server, client) -> {
             assertEquals(404, client.get("/ingredients/100").code());
         });
     }
 
     @Test
-    void testDeleteIngredient() {
+    public void testDeleteIngredient() {
         JavalinTest.test(app, (server, client) -> {
             assertEquals(204, client.delete("/ingredients/1").code());
         });
     }
 
     @Test
-    void testUpdateIngredient() {
+    public void testUpdateIngredient() {
         JavalinTest.test(app, (server, client) -> {
             assertEquals(204, client.put("/ingredients/1", "{\"id\": 1, \"name\": \"parsnips\"}").code());
             assertEquals("{\"id\":1,\"name\":\"parsnips\"}", client.get("/ingredients/1").body().string());
@@ -63,14 +63,14 @@ public class IngredientIntegrationTest {
     }
 
     @Test
-    void testUpdateNotFound() {
+    public void testUpdateNotFound() {
         JavalinTest.test(app, (server, client) -> {
             assertEquals(404, client.put("/ingredients/100", "{\"id\": 1, \"name\": \"parsnips\"}").code());
         });
     }
 
     @Test
-    void testCreateIngredient() {
+    public void testCreateIngredient() {
         JavalinTest.test(app, (server, client) -> {
             assertEquals(201, client.post("/ingredients", "{\"name\": \"parsnips\"}").code());
             assertEquals("{\"id\":7,\"name\":\"parsnips\"}", client.get("/ingredients/7").body().string());
@@ -78,7 +78,7 @@ public class IngredientIntegrationTest {
     }
 
     @Test
-    void testGetIngredients() {
+    public void testGetIngredients() {
         JavalinTest.test(app, (server, client) -> {
             assertEquals(200, client.get("/ingredients").code());
             assertEquals(
@@ -88,7 +88,7 @@ public class IngredientIntegrationTest {
     }
 
     @Test
-    void testPageIngredients() {
+    public void testPageIngredients() {
         JavalinTest.test(app, (server, client) -> {
             assertEquals(200, client.get("/ingredients?page=1&pageSize=2").code());
             assertEquals(
@@ -98,7 +98,7 @@ public class IngredientIntegrationTest {
     }
 
     @Test
-    void testGetIngredientsByTerm() {
+    public void testGetIngredientsByTerm() {
         JavalinTest.test(app, (server, client) -> {
             assertEquals(200, client.get("/ingredients?term=to").code());
             assertEquals(
@@ -108,7 +108,7 @@ public class IngredientIntegrationTest {
     }
 
     @Test
-    void testGetIngredientsByTermSorted() {
+    public void testGetIngredientsByTermSorted() {
         JavalinTest.test(app, (server, client) -> {
             assertEquals(200,
                     client.get("/ingredients?term=to&sortBy=name&sortDirection=desc&page=1&pageSize=3").code());

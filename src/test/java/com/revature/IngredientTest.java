@@ -11,7 +11,7 @@ public class IngredientTest {
     Class<?> ingredientClass = Ingredient.class;
 
     @Test
-    void noArgsConstructor() {
+    public void noArgsConstructor() {
         try {
             ingredientClass.getConstructor();
         } catch (NoSuchMethodException ex) {
@@ -20,7 +20,7 @@ public class IngredientTest {
     }
 
     @Test
-    void parameterizedConstructors() {
+    public void parameterizedConstructors() {
         try {
             ingredientClass.getConstructor(String.class);
             ingredientClass.getConstructor(int.class, String.class);
@@ -31,7 +31,7 @@ public class IngredientTest {
     }
 
     @Test
-    void instanceVariables() {
+    public void instanceVariables() {
         try {
             ingredientClass.getDeclaredField("id");
             ingredientClass.getDeclaredField("name");
@@ -41,7 +41,7 @@ public class IngredientTest {
     }
 
     @Test
-    void getterMethods() {
+    public void getterMethods() {
         try {
             ingredientClass.getMethod("getId");
             ingredientClass.getMethod("getName");
@@ -52,7 +52,7 @@ public class IngredientTest {
     }
 
     @Test
-    void setterMethods() {
+    public void setterMethods() {
         try {
             ingredientClass.getMethod("setId", int.class);
             ingredientClass.getMethod("setName", String.class);
@@ -62,7 +62,7 @@ public class IngredientTest {
     }
 
     @Test
-    void objectContract() {
+    public void objectContract() {
         try {
             ingredientClass.getDeclaredMethod("equals", Object.class);
             ingredientClass.getDeclaredMethod("hashCode");
@@ -72,7 +72,7 @@ public class IngredientTest {
     }
 
     @Test
-    void settersAndGettersImpl() {
+    public void settersAndGettersImpl() {
         Ingredient i = new Ingredient();
         i.setId(1);
         i.setName("test");

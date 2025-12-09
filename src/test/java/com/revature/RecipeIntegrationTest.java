@@ -36,7 +36,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-class RecipeIntegrationTest {
+public class RecipeIntegrationTest {
 
 	private static int PORT = 8081;
 	private static String BASE_URL = "http://localhost:" + PORT;
@@ -111,7 +111,7 @@ class RecipeIntegrationTest {
 	}
 
 	@Test
-	void testGetRecipe() throws IOException {
+	public void testGetRecipe() throws IOException {
 		Request request = new Request.Builder().url(BASE_URL + "/recipes/2").addHeader("Authorization", token).get()
 				.build();
 		Response response = client.newCall(request).execute();
@@ -122,7 +122,7 @@ class RecipeIntegrationTest {
 	}
 
 	@Test
-	void testGetAllRecipes() throws IOException {
+	public void testGetAllRecipes() throws IOException {
 		Request request = new Request.Builder().url(BASE_URL + "/recipes").addHeader("Authorization", token).get()
 				.build();
 		Response response = client.newCall(request).execute();
@@ -130,7 +130,7 @@ class RecipeIntegrationTest {
 	}
 
 	@Test
-	void testPostRecipe() throws Exception {
+	public void testPostRecipe() throws Exception {
 
 		Recipe newRecipe = new Recipe(6, "fried fish", "fish, oil, stove", chefList.get(3));
 		RequestBody recipeBody = RequestBody.create(new JavalinJackson().toJsonString(newRecipe, Recipe.class),
@@ -151,7 +151,7 @@ class RecipeIntegrationTest {
 	}
 
 	@Test
-	void testPutRecipe() throws IOException {
+	public void testPutRecipe() throws IOException {
 		Recipe updatedRecipe = recipeList.get(0);
 		updatedRecipe.setInstructions("Don't add salt");
 		RequestBody recipeBody = RequestBody.create(new JavalinJackson().toJsonString(updatedRecipe, Recipe.class),
@@ -163,7 +163,7 @@ class RecipeIntegrationTest {
 	}
 
 	@Test
-	void testDeleteRecipe() throws IOException {
+	public void testDeleteRecipe() throws IOException {
 
 		Request request = new Request.Builder().url(BASE_URL + "/recipes/2")
 				.addHeader("Authorization", "Bearer" + token).delete()
@@ -178,7 +178,7 @@ class RecipeIntegrationTest {
 	}
 
 	@Test
-	void testFilteredPageOfRecipes() throws IOException {
+	public void testFilteredPageOfRecipes() throws IOException {
 
 		List<Recipe> filteredResult = List.of(recipeList.get(2));
 		Page<Recipe> filteredResultPage = new Page<Recipe>(2, 1, 2, 2, filteredResult);

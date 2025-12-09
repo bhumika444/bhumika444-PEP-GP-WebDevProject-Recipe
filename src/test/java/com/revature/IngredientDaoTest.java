@@ -38,7 +38,7 @@ public class IngredientDaoTest {
         }
 
         @Test
-        void createIngredientTest() {
+        public void createIngredientTest() {
                 Ingredient ingredient = new Ingredient("testIngredient");
                 assertCountDifference(1, "Expected Ingredient count to be 1 more", countSelStatement, () -> {
                         int newId = ingredientDao.createIngredient(ingredient);
@@ -48,7 +48,7 @@ public class IngredientDaoTest {
         }
 
         @Test
-        void readOneTest() {
+        public void readOneTest() {
                 Ingredient ingredient = ingredientDao.getIngredientById(1);
                 assertEquals(ingredientList.get(0), ingredient,
                                 () -> "The returned ingredient doesn't match the expected ingredient. Expected: "
@@ -56,7 +56,7 @@ public class IngredientDaoTest {
         }
 
         @Test
-        void deleteIngredientTest() throws SQLException {
+        public void deleteIngredientTest() throws SQLException {
                 Ingredient ingredient = ingredientDao.getIngredientById(1);
                 assertCountDifference(-1, "Expected Ingredient count to be 1 less", countSelStatement, () -> {
                         ingredientDao.deleteIngredient(ingredient);
@@ -69,7 +69,7 @@ public class IngredientDaoTest {
         }
 
         @Test
-        void updateIngredientTest() {
+        public void updateIngredientTest() {
                 Ingredient ingredient = ingredientDao.getIngredientById(1);
                 ingredient.setName("newName");
                 ingredientDao.updateIngredient(ingredient);
@@ -81,7 +81,7 @@ public class IngredientDaoTest {
         }
 
         @Test
-        void getAllIngredientsTest() {
+        public void getAllIngredientsTest() {
                 List<Ingredient> ingredients = ingredientDao.getAllIngredients();
                 assertEquals(ingredientList.size(), ingredients.size(),
                                 "The number of returned ingredients should match the expected size.");
@@ -92,7 +92,7 @@ public class IngredientDaoTest {
         }
 
         @Test
-        void getAndPageAllIngredientsTest() {
+        public void getAndPageAllIngredientsTest() {
                 // Specify sortBy and sortDirection as "ID" and "ASC" for a consistent ordering
                 PageOptions pageOptions = new PageOptions(1, 2, "ID", "ASC");
 
@@ -110,7 +110,7 @@ public class IngredientDaoTest {
         }
 
         @Test
-        void searchIngredientsTest() {
+        public void searchIngredientsTest() {
                 List<Ingredient> ingredients = ingredientDao.searchIngredients("to");
                 List<Ingredient> expectedIngredients = Arrays.asList(ingredientList.get(1), ingredientList.get(2),
                                 ingredientList.get(5));
@@ -121,7 +121,7 @@ public class IngredientDaoTest {
         }
 
         @Test
-        void searchAndPageIngredientsTest() {
+        public void searchAndPageIngredientsTest() {
                 // Use a search term and specify page and sort options
                 PageOptions pageOptions = new PageOptions(1, 2, "ID", "ASC");
 

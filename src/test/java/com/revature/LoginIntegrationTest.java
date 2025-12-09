@@ -35,7 +35,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-class LoginIntegrationTest {
+public class LoginIntegrationTest {
 
 	private static int PORT = 8085;
 	private static String BASE_URL = "http://localhost:" + PORT;
@@ -81,7 +81,7 @@ class LoginIntegrationTest {
 	}
 
 	@Test
-	void testSuccessfulLogin() throws IOException {
+	public void testSuccessfulLogin() throws IOException {
 		Chef chef = new Chef(1, "JoeCool", "snoopy@null.com", "redbarron", false);
 		Recipe newRecipe = new Recipe(6, "fried fish", "fish, oil, stove", chef);
 
@@ -135,7 +135,7 @@ class LoginIntegrationTest {
 	}
 
 	@Test
-	void testUnsuccessfulLogin() throws IOException {
+	public void testUnsuccessfulLogin() throws IOException {
 
 		Chef chef = new Chef(1, "JoeCool", "snoopy@null.com", "woodstock", false);
 		Recipe newRecipe = new Recipe(6, "fried fish", "fish, oil, stove", chef);
@@ -158,7 +158,7 @@ class LoginIntegrationTest {
 	}
 
 	@Test
-	void testLogout() throws IOException {
+	public void testLogout() throws IOException {
 		Chef chef = new Chef(1, "JoeCool", "snoopy@null.com", "redbarron", false);
 		Recipe newRecipe = new Recipe(6, "fried fish", "fish, oil, stove", chef);
 		RequestBody chefBody = RequestBody.create(
@@ -187,7 +187,7 @@ class LoginIntegrationTest {
 	}
 
 	@Test
-	void testRegister() throws IOException {
+	public void testRegister() throws IOException {
 
 		Chef chef = new Chef(0, "new chef", "newchef@chefmail.com", "1234abc", false);
 		RequestBody chefBody = RequestBody.create(

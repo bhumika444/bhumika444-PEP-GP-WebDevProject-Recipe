@@ -18,7 +18,7 @@ import com.revature.service.RecipeService;
 import com.revature.util.ConnectionUtil;
 import com.revature.util.JavalinAppUtil;
 
-class JavalinConfigTest {
+public class JavalinConfigTest {
 
 	private RecipeDAO recipeDao;
 	private RecipeService recipeService;
@@ -49,7 +49,7 @@ class JavalinConfigTest {
 	}
 
 	@Test
-	void test() {
+	public void test() {
 
 		new JavalinAppUtil(recipeController, authController, ingredientController).getApp().start();
 

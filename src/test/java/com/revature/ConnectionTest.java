@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 
 import com.revature.util.ConnectionUtil;
 
-class ConnectionTest {
+public class ConnectionTest {
 
 	@Test
-	void getConnectionTest() throws SQLException {
+	public void getConnectionTest() throws SQLException {
 		Connection connection = new ConnectionUtil().getConnection();
 		assertNotNull(connection, () -> "Connection should not be null");
 		connection.close();
