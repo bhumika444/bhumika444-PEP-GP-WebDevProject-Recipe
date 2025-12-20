@@ -594,6 +594,7 @@ public class RecipePageTest {
     @Test
     public void testUlExists() {
         WebElement element = webDriver.findElement(By.id("recipe-list"));
+        
         assertEquals("ul", element.getTagName());
     }
 

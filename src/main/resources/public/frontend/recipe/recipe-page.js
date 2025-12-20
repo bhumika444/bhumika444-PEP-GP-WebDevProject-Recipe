@@ -259,10 +259,10 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     const authToken = sessionStorage.getItem('auth-token');
     const isAdmin = sessionStorage.getItem('is-admin') === 'true';
-    if (!authToken) {
-        alert("You must be logged in to view the recipe page.");
-        return window.location.href = '../login/login-page.html';
-    }
+    // if (!authToken) {
+    //     alert("You must be logged in to view the recipe page.");
+    //     return window.location.href = '../login/login-page.html';
+    // }
     if (logoutButton) {
         logoutButton.style.display = authToken ? 'block' : 'none';
     }
