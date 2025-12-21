@@ -115,7 +115,7 @@ async function processLogin(testData) {
             }
             if (!isTestEnv) {
                 setTimeout(() => {
-                    window.location.href = "recipe-page.html";
+                    window.location.href = "/recipe-page.html";
                 }, 500);
             }
 

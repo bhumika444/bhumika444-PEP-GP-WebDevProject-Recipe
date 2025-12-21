@@ -263,8 +263,12 @@ window.addEventListener("DOMContentLoaded", () => {
     //     alert("You must be logged in to view the recipe page.");
     //     return window.location.href = '../login/login-page.html';
     // }
-    if (logoutButton) {
-        logoutButton.style.display = authToken ? 'block' : 'none';
+    // if (logoutButton) {
+    //     logoutButton.style.display = authToken ? 'block' : 'none';
+    // }
+    if (sessionStorage.getItem("auth-token")) {
+
+        logoutButton.removeAttribute('hidden')
     }
     /*
      * TODO: Show admin link if is-admin flag in sessionStorage is "true"
