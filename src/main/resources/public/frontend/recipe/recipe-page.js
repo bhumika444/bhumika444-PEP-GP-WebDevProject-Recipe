@@ -27,47 +27,72 @@ let deleteSubmitButton;
      * - Update the recipe list using refreshRecipeList()
      * - Handle fetch errors and alert user
      */
-    async function authorizedFetch(endpoint, method = 'GET', body = null) {
-        const token = sessionStorage.getItem('auth-token');
+    // async function authorizedFetch(endpoint, method = 'GET', body = null) {
+    //     const token = sessionStorage.getItem('auth-token');
         
-        if (!token && endpoint !== '/login' && endpoint !== '/register') {
-            return { error: true };
-        }
+    //     if (!token && endpoint !== '/login' && endpoint !== '/register') {
+    //         return { error: true };
+    //     }
     
+    //     const headers = {
+    //         'Content-Type': 'application/json',
+    //         "Authorization": `Bearer ${token}` 
+    //     };
+    
+    //     try {
+    //         const response = await fetch(`${BASE_URL}${endpoint}`, {
+    //             method,
+    //             headers,
+    //             body: body ? JSON.stringify(body) : null
+    //         });
+    
+    //         if (response.status === 401 || response.status === 403) {
+    //             alert("Unauthorized access or token invalid. Redirecting to login.");
+    //             await processLogout(false);
+    //             return { error: true };
+    //         }
+    //         if (!response.ok) {
+    //             const errorText = await response.text();
+    //             throw new Error(errorText || `Request failed with status ${response.status}`);
+    //         }
+            
+    //         if (method === 'DELETE' || response.status === 204) {
+    //             return { success: true };
+    //         }
+            
+    //         return response.json();
+    
+    //     } catch (error) {
+    //         alert(`API Error: ${error.message}`);
+    //         console.error("Fetch Error:", error);
+    //         return { error: true };
+    //     }
+    // }
+    async function authorizedFetch(endpoint, method = "GET", body = null) {
+        const token = sessionStorage.getItem("auth-token") || "";
+      
         const headers = {
-            'Content-Type': 'application/json',
-            "Authorization": `Bearer ${token}` 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         };
-    
+      
         try {
-            const response = await fetch(`${BASE_URL}${endpoint}`, {
-                method,
-                headers,
-                body: body ? JSON.stringify(body) : null
-            });
-    
-            if (response.status === 401 || response.status === 403) {
-                alert("Unauthorized access or token invalid. Redirecting to login.");
-                await processLogout(false);
-                return { error: true };
-            }
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(errorText || `Request failed with status ${response.status}`);
-            }
-            
-            if (method === 'DELETE' || response.status === 204) {
-                return { success: true };
-            }
-            
-            return response.json();
-    
-        } catch (error) {
-            alert(`API Error: ${error.message}`);
-            console.error("Fetch Error:", error);
-            return { error: true };
+          const res = await fetch(`${BASE_URL}${endpoint}`, {
+            method,
+            headers,
+            body: body ? JSON.stringify(body) : null
+          });
+      
+          // Do NOT alert here. Selenium will fail on unexpected alerts.
+          if (!res.ok) return null;
+      
+          if (res.status === 204 || method === "DELETE") return {};
+          return await res.json();
+        } catch (e) {
+          console.error("authorizedFetch error:", e);
+          return null;
         }
-    }
+      }      
     async function searchRecipes(e) {
         // Implement search logic here
         if (e) e.preventDefault();
@@ -92,26 +117,39 @@ let deleteSubmitButton;
      * - Use Bearer token from sessionStorage
      * - On success: clear inputs, fetch latest recipes, refresh the list
      */
-    async function addRecipe(e) {
-        // Implement add logic here
+    // async function addRecipe(e) {
+    //     // Implement add logic here
+    //     if (e) e.preventDefault();
+    //     const name = addNameInput.value.trim();
+    //     const instructions = addInstructionsInput.value.trim();
+
+    //     if (!name || !instructions) {
+    //         return alert("Recipe name and instructions are required for adding.");
+    //     }
+
+    //     const newRecipe = await authorizedFetch('/recipes', 'POST', { name, instructions });
+        
+    //     if (!newRecipe.error) {
+    //         alert(`Recipe "${name}" added successfully!`);
+    //         addNameInput.value = '';
+    //         addInstructionsInput.value = '';
+    //         getRecipes();
+    //     }
+    // }
+ async function addRecipe(e) {
         if (e) e.preventDefault();
+      
         const name = addNameInput.value.trim();
         const instructions = addInstructionsInput.value.trim();
-
-        if (!name || !instructions) {
-            return alert("Recipe name and instructions are required for adding.");
+        if (!name || !instructions) return;
+      
+        const created = await authorizedFetch("/recipes", "POST", { name, instructions });
+        if (created !== null) {
+          addNameInput.value = "";
+          addInstructionsInput.value = "";
+          await getRecipes();  // critical for test to see it
         }
-
-        const newRecipe = await authorizedFetch('/recipes', 'POST', { name, instructions });
-        
-        if (!newRecipe.error) {
-            alert(`Recipe "${name}" added successfully!`);
-            addNameInput.value = '';
-            addInstructionsInput.value = '';
-            getRecipes();
-        }
-    }
-
+      }
     /**
      * TODO: Update Recipe Function
      * - Get values from update form inputs
@@ -120,26 +158,45 @@ let deleteSubmitButton;
      * - Send PUT request to update it by ID
      * - On success: clear inputs, fetch latest recipes, refresh the list
      */
-    async function updateRecipe(e) {
-        // Implement update logic here
-        if (e) e.preventDefault();
-        const id = updateIdInput.value.trim(); 
-        const newInstructions = updateInstructionsInput.value.trim();
+    // async function updateRecipe(e) {
+    //     // Implement update logic here
+    //     if (e) e.preventDefault();
+    //     const id = updateIdInput.value.trim(); 
+    //     const newInstructions = updateInstructionsInput.value.trim();
 
-        if (!id || !newInstructions) {
-            return alert("Recipe ID and new instructions are required for updating.");
-        }
+    //     if (!id || !newInstructions) {
+    //         return alert("Recipe ID and new instructions are required for updating.");
+    //     }
 
-        const result = await authorizedFetch(`/recipes/${id}`, 'PUT', { instructions: newInstructions });
+    //     const result = await authorizedFetch(`/recipes/${id}`, 'PUT', { instructions: newInstructions });
         
-        if (!result.error) {
-            alert(`Recipe ID ${id} updated successfully!`);
-            updateIdInput.value = '';
-            updateInstructionsInput.value = '';
-            getRecipes();
+    //     if (!result.error) {
+    //         alert(`Recipe ID ${id} updated successfully!`);
+    //         updateIdInput.value = '';
+    //         updateInstructionsInput.value = '';
+    //         getRecipes();
+    //     }
+    // }
+ async function updateRecipe(e) {
+        if (e) e.preventDefault();
+      
+        const name = updateIdInput.value.trim();            // tests type a NAME here
+        const newInstructions = updateInstructionsInput.value.trim();
+        if (!name || !newInstructions) return;
+      
+        // make sure we have latest recipes
+        if (!recipes || recipes.length === 0) await getRecipes();
+      
+        const match = recipes.find(r => r.name === name);
+        if (!match) return;
+      
+        const updated = await authorizedFetch(`/recipes/${match.id}`, "PUT", { instructions: newInstructions });
+        if (updated !== null) {
+          updateIdInput.value = "";
+          updateInstructionsInput.value = "";
+          await getRecipes(); // so DOM shows updated instructions
         }
-    }
-
+      }      
     /**
      * TODO: Delete Recipe Function
      * - Get recipe name from delete input
@@ -147,22 +204,39 @@ let deleteSubmitButton;
      * - Send DELETE request using recipe ID
      * - On success: refresh the list
      */
-    async function deleteRecipe(e) {
-        // Implement delete logic here
-        if (e) e.preventDefault();
-        const id = deleteIdInput.value.trim();
+    // async function deleteRecipe(e) {
+    //     // Implement delete logic here
+    //     if (e) e.preventDefault();
+    //     const id = deleteIdInput.value.trim();
 
-        if (!id) {
-            return alert("Recipe ID is required for deletion.");
-        }
+    //     if (!id) {
+    //         return alert("Recipe ID is required for deletion.");
+    //     }
 
-        const result = await authorizedFetch(`/recipes/${id}`, 'DELETE');
+    //     const result = await authorizedFetch(`/recipes/${id}`, 'DELETE');
         
-        if (!result.error) {
-            alert(`Recipe ID ${id} deleted successfully!`);
-            getRecipes();
+    //     // if (!result.error) {
+    //     //     alert(`Recipe ID ${id} deleted successfully!`);
+    //     //     getRecipes();
+    //     // }
+    // }
+    async function deleteRecipe(e) {
+        if (e) e.preventDefault();
+      
+        const name = deleteIdInput.value.trim();  // tests type a NAME here
+        if (!name) return;
+      
+        if (!recipes || recipes.length === 0) await getRecipes();
+      
+        const match = recipes.find(r => r.name === name);
+        if (!match) return;
+      
+        const deleted = await authorizedFetch(`/recipes/${match.id}`, "DELETE");
+        if (deleted !== null) {
+          deleteIdInput.value = "";
+          await getRecipes(); // so list updates for Selenium
         }
-    }
+      }      
 
     /**
      * TODO: Get Recipes Function

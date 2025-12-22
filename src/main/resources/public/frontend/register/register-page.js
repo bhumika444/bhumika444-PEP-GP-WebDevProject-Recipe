@@ -92,7 +92,7 @@ async function processRegistration(testData) {
         const response = await fetch(`${BASE_URL}/register`, requestOptions);
         if (response.status === 201) {
             if (!isTestEnv) {
-                window.location.href = "login.html";
+                window.location.href = "../login/login.html";
             }
             return { success: true };
         }
