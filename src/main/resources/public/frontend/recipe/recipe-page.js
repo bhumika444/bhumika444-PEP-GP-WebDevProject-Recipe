@@ -47,7 +47,14 @@ let deleteSubmitButton;
           if (!res.ok) return null;
       
           if (res.status === 204 || method === "DELETE") return {};
-          return await res.json();
+          const text = await res.text();
+          if (!text) return {};
+
+          try {
+              return JSON.parse(text);
+          } catch {
+              return text;
+          }
         } catch (e) {
           console.error("authorizedFetch error:", e);
           return null;
@@ -100,26 +107,7 @@ let deleteSubmitButton;
      * - Send PUT request to update it by ID
      * - On success: clear inputs, fetch latest recipes, refresh the list
      */
-    // async function updateRecipe(e) {
-    //     // Implement update logic here
-    //     if (e) e.preventDefault();
-    //     const id = updateIdInput.value.trim(); 
-    //     const newInstructions = updateInstructionsInput.value.trim();
-
-    //     if (!id || !newInstructions) {
-    //         return alert("Recipe ID and new instructions are required for updating.");
-    //     }
-
-    //     const result = await authorizedFetch(`/recipes/${id}`, 'PUT', { instructions: newInstructions });
-        
-    //     if (!result.error) {
-    //         alert(`Recipe ID ${id} updated successfully!`);
-    //         updateIdInput.value = '';
-    //         updateInstructionsInput.value = '';
-    //         getRecipes();
-    //     }
-    // }
- async function updateRecipe(e) {
+  async function updateRecipe(e) {
         if (e) e.preventDefault();
       
         const name = updateIdInput.value.trim();            // tests type a NAME here
@@ -146,22 +134,7 @@ let deleteSubmitButton;
      * - Send DELETE request using recipe ID
      * - On success: refresh the list
      */
-    // async function deleteRecipe(e) {
-    //     // Implement delete logic here
-    //     if (e) e.preventDefault();
-    //     const id = deleteIdInput.value.trim();
-
-    //     if (!id) {
-    //         return alert("Recipe ID is required for deletion.");
-    //     }
-
-    //     const result = await authorizedFetch(`/recipes/${id}`, 'DELETE');
-        
-    //     // if (!result.error) {
-    //     //     alert(`Recipe ID ${id} deleted successfully!`);
-    //     //     getRecipes();
-    //     // }
-    // }
+    
     async function deleteRecipe(e) {
         if (e) e.preventDefault();
       
@@ -190,12 +163,14 @@ let deleteSubmitButton;
         // Implement get logic here
         const data = await authorizedFetch('/recipes', 'GET');
 
-        if (data && !data.error) {
-            recipes = data;
-            refreshRecipeList(recipes);
+        if (Array.isArray(data)) {
+          recipes = data;
+          refreshRecipeList(recipes);
         } else {
-            refreshRecipeList([]);
+          recipes = [];
+          refreshRecipeList([]);
         }
+        
     }
 
     /**
@@ -237,10 +212,7 @@ let deleteSubmitButton;
         sessionStorage.removeItem('auth-token');
         sessionStorage.removeItem('is-admin');
         
-        if (result.error && shouldRedirect) {
-            alert("Logout failed on server, but session cleared locally.");
-        }
-        
+    
         if (shouldRedirect) {
             window.location.href = '../login/login-page.html';
         }
@@ -275,11 +247,12 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     const authToken = sessionStorage.getItem('auth-token');
     const isAdmin = (sessionStorage.getItem("is-admin") || "").trim() === "true";
-    
-    if (sessionStorage.getItem("auth-token")) {
-
-        logoutButton.removeAttribute('hidden')
+    if (!authToken) {
+      window.location.href = "../login/login-page.html";
+      return;
     }
+    
+      logoutButton.removeAttribute('hidden')
     /*
      * TODO: Show admin link if is-admin flag in sessionStorage is "true"
      */
