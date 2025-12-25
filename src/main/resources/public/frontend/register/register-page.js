@@ -1,32 +1,22 @@
 /**
  * This script defines the registration functionality for the Registration page in the Recipe Management Application.
  */
-
 const BASE_URL = "http://localhost:8081"; // backend URL
-const isTestEnv = typeof window === "undefined" || typeof document === "undefined";
-
 /* 
  * TODO: Get references to various DOM elements
  * - usernameInput, emailInput, passwordInput, repeatPasswordInput, registerButton
  */
-let usernameInput, emailInput, passwordInput, repeatPasswordInput, registerButton;
-if (!isTestEnv) {
-    usernameInput = document.getElementById("username-input");
-    emailInput = document.getElementById("email-input");
-    passwordInput = document.getElementById("password-input");
-    repeatPasswordInput = document.getElementById("repeat-password-input");
-    registerButton = document.getElementById("register-button");
-
+const usernameInput = document.getElementById("username-input");
+const emailInput = document.getElementById("email-input");
+const passwordInput = document.getElementById("password-input");
+const repeatPasswordInput = document.getElementById("repeat-password-input");
+const registerButton = document.getElementById("register-button");
 /* 
  * TODO: Ensure the register button calls processRegistration when clicked
  */
 if (registerButton) {
     registerButton.addEventListener("click", processRegistration);
-}
-}
-function safeAlert(msg) {
-    if (!isTestEnv) alert(msg);
-}
+  }
 
 /**
  * TODO: Process Registration Function
@@ -51,65 +41,47 @@ function safeAlert(msg) {
  * - Wrap in try/catch
  * - Log error and alert user
  */
-async function processRegistration(testData) {
+async function processRegistration(e) {
     // Implement registration logic here
    
     // Example placeholder:
     
     // const registerBody = { username, email, password };
-    
+    if (e) e.preventDefault();
+
     // await fetch(...)
     try {
-        let username, email, password, repeatPassword;
-        if (isTestEnv) {
-            ({ username, email, password, repeatPassword } = testData);
-        } else {
-            username = usernameInput?.value?.trim();
-            email = emailInput?.value?.trim();
-            password = passwordInput?.value?.trim();
-            repeatPassword = repeatPasswordInput?.value?.trim();
-        }
+        const username = usernameInput.value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        const repeatPassword = repeatPasswordInput.value.trim();
         if (!username || !email || !password || !repeatPassword) {
-            safeAlert("All fields are required.");
-            return isTestEnv ? { success: false, error: "Missing fields" } : null;
-        }
+            alert("Please fill in all fields.");
+            return;
+          }
+      
+          if (password !== repeatPassword) {
+            alert("Passwords do not match.");
+            return;
+          }
 
-        if (password !== repeatPassword) {
-            safeAlert("Passwords do not match.");
-            return isTestEnv ? { success: false, error: "Password mismatch" } : null;
-        }
-        const registerBody = {
-            username,
-            email,
-            password
-        };
+    const registerBody = { username, email, password };
 
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(registerBody)
-        };
-        const response = await fetch(`${BASE_URL}/register`, requestOptions);
-        if (response.status === 201) {
-            if (!isTestEnv) {
-                window.location.href = "../login/login.html";
-            }
-            return { success: true };
-        }
+    const response = await fetch(`${BASE_URL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(registerBody)
+    });
 
-        if (response.status === 409) {
-            safeAlert("User or email already exists.");
-            return isTestEnv ? { success: false, error: "Conflict" } : null;
-        }
-
-        safeAlert("Registration failed. Please try again.");
-        return isTestEnv ? { success: false, error: "Unknown error" } : null;
-       
-
+    if (response.status === 201) {
+        window.location.href = "../login/login-page.html";
+      } else if (response.status === 409) {
+        alert("User or email already exists.");
+      } else {
+        alert("Error: Could not complete registration.");
+      }
     } catch (error) {
-        console.error("Registration error:", error);
-        safeAlert("An unexpected error occurred.");
-
-        return isTestEnv ? { success: false, error: "Exception" } : null;
+      console.error("Registration error:", error);
+      alert("Unexpected error occurred.");
     }
-}
+  }

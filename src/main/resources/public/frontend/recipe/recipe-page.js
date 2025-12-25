@@ -27,47 +27,7 @@ let deleteSubmitButton;
      * - Update the recipe list using refreshRecipeList()
      * - Handle fetch errors and alert user
      */
-    // async function authorizedFetch(endpoint, method = 'GET', body = null) {
-    //     const token = sessionStorage.getItem('auth-token');
-        
-    //     if (!token && endpoint !== '/login' && endpoint !== '/register') {
-    //         return { error: true };
-    //     }
-    
-    //     const headers = {
-    //         'Content-Type': 'application/json',
-    //         "Authorization": `Bearer ${token}` 
-    //     };
-    
-    //     try {
-    //         const response = await fetch(`${BASE_URL}${endpoint}`, {
-    //             method,
-    //             headers,
-    //             body: body ? JSON.stringify(body) : null
-    //         });
-    
-    //         if (response.status === 401 || response.status === 403) {
-    //             alert("Unauthorized access or token invalid. Redirecting to login.");
-    //             await processLogout(false);
-    //             return { error: true };
-    //         }
-    //         if (!response.ok) {
-    //             const errorText = await response.text();
-    //             throw new Error(errorText || `Request failed with status ${response.status}`);
-    //         }
-            
-    //         if (method === 'DELETE' || response.status === 204) {
-    //             return { success: true };
-    //         }
-            
-    //         return response.json();
-    
-    //     } catch (error) {
-    //         alert(`API Error: ${error.message}`);
-    //         console.error("Fetch Error:", error);
-    //         return { error: true };
-    //     }
-    // }
+  
     async function authorizedFetch(endpoint, method = "GET", body = null) {
         const token = sessionStorage.getItem("auth-token") || "";
       
@@ -117,25 +77,7 @@ let deleteSubmitButton;
      * - Use Bearer token from sessionStorage
      * - On success: clear inputs, fetch latest recipes, refresh the list
      */
-    // async function addRecipe(e) {
-    //     // Implement add logic here
-    //     if (e) e.preventDefault();
-    //     const name = addNameInput.value.trim();
-    //     const instructions = addInstructionsInput.value.trim();
-
-    //     if (!name || !instructions) {
-    //         return alert("Recipe name and instructions are required for adding.");
-    //     }
-
-    //     const newRecipe = await authorizedFetch('/recipes', 'POST', { name, instructions });
-        
-    //     if (!newRecipe.error) {
-    //         alert(`Recipe "${name}" added successfully!`);
-    //         addNameInput.value = '';
-    //         addInstructionsInput.value = '';
-    //         getRecipes();
-    //     }
-    // }
+   
  async function addRecipe(e) {
         if (e) e.preventDefault();
       
@@ -147,7 +89,7 @@ let deleteSubmitButton;
         if (created !== null) {
           addNameInput.value = "";
           addInstructionsInput.value = "";
-          await getRecipes();  // critical for test to see it
+          await getRecipes();  
         }
       }
     /**
@@ -332,14 +274,8 @@ window.addEventListener("DOMContentLoaded", () => {
      * TODO: Show logout button if auth-token exists in sessionStorage
      */
     const authToken = sessionStorage.getItem('auth-token');
-    const isAdmin = sessionStorage.getItem('is-admin') === 'true';
-    // if (!authToken) {
-    //     alert("You must be logged in to view the recipe page.");
-    //     return window.location.href = '../login/login-page.html';
-    // }
-    // if (logoutButton) {
-    //     logoutButton.style.display = authToken ? 'block' : 'none';
-    // }
+    const isAdmin = (sessionStorage.getItem("is-admin") || "").trim() === "true";
+    
     if (sessionStorage.getItem("auth-token")) {
 
         logoutButton.removeAttribute('hidden')

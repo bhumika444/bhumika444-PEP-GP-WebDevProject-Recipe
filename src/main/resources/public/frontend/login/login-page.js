@@ -17,9 +17,9 @@ const logoutButton = document.getElementById("logout-button");/*
  * TODO: Add click event listener to login button
  * - Call processLogin on click
  */
-if (loginButton) {
+if (loginButton) 
     loginButton.addEventListener("click", processLogin);
-}
+
 /*
  * TODO: Process Login Function
  * 
@@ -49,7 +49,7 @@ if (loginButton) {
     // - Trim input and validate that neither is empty
   async function processLogin(e) {
     if (e) e.preventDefault();
-    try {
+    
       const username = usernameInput.value.trim();
       const password = passwordInput.value.trim();
 
@@ -57,8 +57,9 @@ if (loginButton) {
         alert("Username and password are required.");
         return;
     }
+    try{
     // TODO: Create a requestBody object with username and password
-     const requestBody = { username, password };
+    const requestBody = { username, password };
     const response = await fetch(`${BASE_URL}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -71,36 +72,40 @@ if (loginButton) {
         // - Read the response as text
         // - Response will be a space-separated string: "token123 true"
         // - Split the string into token and isAdmin flag
-     if (response.status === 200) {
-      const textResult = (await response.text()).trim(); // "token123 true"
-      const [token, isAdmin] = textResult.split(/\s+/);
+    
+      if (response.status === 200) {
+        const textResult = (await response.text()).trim();// "token123 true"
+        const [token, isAdmin] = textResult.split(/\s+/);
 
         // - Store both in sessionStorage using sessionStorage.setItem()
-      sessionStorage.setItem("auth-token", token);
-      sessionStorage.setItem("is-admin", isAdmin);
+        sessionStorage.setItem("auth-token", token);
+        sessionStorage.setItem("is-admin", (isAdmin || "").trim());
         // TODO: Optionally show the logout button if applicable
           if (logoutButton) logoutButton.style.display = "block";
 
         // TODO: Add a small delay (e.g., 500ms) using setTimeout before redirecting
         // - Use window.location.href to redirect to the recipe page
-      window.location.href = "../recipe/recipe-page.html";
-      return;
+        window.location.href = "../recipe/recipe-page.html";
+        return;
+      }
         // TODO: If response status is 401
-        // - Alert the user with "Incorrect login!"
-      if (response.status === 401) {
-      alert("Incorrect login!");
-      return;
-    }
+        //  Alert the user with "Incorrect login!"
+        if (response.status === 401) {
+          alert("Incorrect login!");
+          return;
+        }
+        
         // TODO: For any other status code
         // - Alert the user with a generic error like "Unknown issue!"
-           alert("Unknown issue!");
+        alert("Unknown issue!");
      }
-    }
+
     catch (error) {
         // TODO: Handle any network or unexpected errors
         // - Log the error and alert the user
        console.error("Login error:", error);
     alert("Network or server error.");
+  
   }
 
-}
+  }
