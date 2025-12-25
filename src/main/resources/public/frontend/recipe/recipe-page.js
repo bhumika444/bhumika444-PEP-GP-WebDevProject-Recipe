@@ -110,7 +110,7 @@ let deleteSubmitButton;
   async function updateRecipe(e) {
         if (e) e.preventDefault();
       
-        const name = updateIdInput.value.trim();            // tests type a NAME here
+        const name = updateIdInput.value.trim();            
         const newInstructions = updateInstructionsInput.value.trim();
         if (!name || !newInstructions) return;
       
