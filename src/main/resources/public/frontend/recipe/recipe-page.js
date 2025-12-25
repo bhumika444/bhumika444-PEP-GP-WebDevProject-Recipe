@@ -137,6 +137,11 @@ let deleteSubmitButton;
     
     async function deleteRecipe(e) {
         if (e) e.preventDefault();
+          const isAdmin = (sessionStorage.getItem("is-admin") || "").trim() === "true";
+        if (!isAdmin) {
+          alert("Access denied. Admins only.");
+          return;
+        }
       
         const name = deleteIdInput.value.trim();  // tests type a NAME here
         if (!name) return;
