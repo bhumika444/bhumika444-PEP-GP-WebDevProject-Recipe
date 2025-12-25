@@ -247,10 +247,10 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     const authToken = sessionStorage.getItem('auth-token');
     const isAdmin = (sessionStorage.getItem("is-admin") || "").trim() === "true";
-    if (!authToken) {
-      window.location.href = "../login/login-page.html";
-      return;
-    }
+    // if (!authToken) {
+    //   window.location.href = "../login/login-page.html";
+    //   return;
+    // }
     
       logoutButton.removeAttribute('hidden')
     /*
