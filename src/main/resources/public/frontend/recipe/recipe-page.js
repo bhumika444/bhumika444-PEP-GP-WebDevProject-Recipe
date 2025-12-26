@@ -42,8 +42,7 @@ let deleteSubmitButton;
             headers,
             body: body ? JSON.stringify(body) : null
           });
-      
-          // Do NOT alert here. Selenium will fail on unexpected alerts.
+  
           if (!res.ok) return null;
       
           if (res.status === 204 || method === "DELETE") return {};
@@ -143,7 +142,7 @@ let deleteSubmitButton;
           return;
         }
       
-        const name = deleteIdInput.value.trim();  // tests type a NAME here
+        const name = deleteIdInput.value.trim();  
         if (!name) return;
       
         if (!recipes || recipes.length === 0) await getRecipes();
@@ -154,7 +153,7 @@ let deleteSubmitButton;
         const deleted = await authorizedFetch(`/recipes/${match.id}`, "DELETE");
         if (deleted !== null) {
           deleteIdInput.value = "";
-          await getRecipes(); // so list updates for Selenium
+          await getRecipes(); 
         }
       }      
 
@@ -252,10 +251,7 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     const authToken = sessionStorage.getItem('auth-token');
     const isAdmin = (sessionStorage.getItem("is-admin") || "").trim() === "true";
-    // if (!authToken) {
-    //   window.location.href = "../login/login-page.html";
-    //   return;
-    // }
+  
     
       logoutButton.removeAttribute('hidden')
     /*

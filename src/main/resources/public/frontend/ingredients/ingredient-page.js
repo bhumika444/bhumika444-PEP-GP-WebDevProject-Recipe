@@ -150,7 +150,7 @@ async function deleteIngredient() {
  *   - Append to container
  */
 function refreshIngredientList() {
-//     // Implement ingredient list rendering logic here
+    // Implement ingredient list rendering logic here
 ingredientListContainer.innerHTML = "";
 
   ingredients.forEach(ingredient => {
