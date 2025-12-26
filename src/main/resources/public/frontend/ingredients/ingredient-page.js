@@ -1,6 +1,6 @@
-// /**
-//  * This script defines the add, view, and delete operations for Ingredient objects in the Recipe Management Application.
-//  */
+/**
+ * This script defines the add, view, and delete operations for Ingredient objects in the Recipe Management Application.
+ */
 
 const BASE_URL = "http://localhost:8081"; // backend URL
 
@@ -65,7 +65,6 @@ async function addIngredient() {
       body: JSON.stringify({ name })
     });
 
-    // backend might return 200 or 201 depending on implementation
     if (response.ok) {
       addIngredientNameInput.value = "";
       await getIngredients();
@@ -120,8 +119,7 @@ async function deleteIngredient() {
   const targetName = deleteIngredientNameInput.value.trim();
   if (!targetName) return;
 
-  // Find ingredient from stored array (use backend-provided id)
-  const match = ingredients.find(i => i.name.toLowerCase() === targetName.toLowerCase());
+const match = ingredients.find(i => i.name.toLowerCase() === targetName.toLowerCase());
   if (!match) return;
 
   try {
@@ -130,7 +128,6 @@ async function deleteIngredient() {
       headers: getAuthHeaders(false)
     });
 
-    // backend might return 200 or 204
     if (response.ok || response.status === 204) {
       deleteIngredientNameInput.value = "";
       await getIngredients();
